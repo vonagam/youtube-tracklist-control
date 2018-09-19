@@ -109,7 +109,7 @@ chrome.tabs.query({'active': true,'currentWindow': true}, function(tab){
     // Inject script if no response is received
     chrome.tabs.sendMessage(currentTab.id, "getCurrentVideo", function (response) {
       if (response === undefined) {
-        backgroundPage.injectIntoTab(currentTab);
+        backgroundPage.injectScriptIntoTab(currentTab);
       }
     });
     backgroundPage.setTrackedTab(currentTab);

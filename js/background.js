@@ -222,33 +222,35 @@ function refreshTracklist(tracklistTable) {
   });
 }
 
-// Inject contentScript on upgrade/install into all youtube tabs
-chrome.windows.getAll({
-  populate: true
-}, function (windows) {
-  var i = 0, w = windows.length, currentWindow;
-  var tabToTrack = null;
-  for( ; i < w; i++ ) {
-    currentWindow = windows[i];
-    var j = 0, t = currentWindow.tabs.length, currentTab;
-    for( ; j < t; j++ ) {
-      currentTab = currentWindow.tabs[j];
-      // Proceed only with youtube pages
-      if(currentTab.url.match(injectableUrlRegex) ) {
-        injectIntoTab(currentTab);
-        tabToTrack = currentTab;
+// Inject contentScript into all youtube tabs
+function injectScriptIntoAllTabs() {
+  chrome.windows.getAll({
+    populate: true
+  }, function (windows) {
+    var i = 0, w = windows.length, currentWindow;
+    var tabToTrack = null;
+    for( ; i < w; i++ ) {
+      currentWindow = windows[i];
+      var j = 0, t = currentWindow.tabs.length, currentTab;
+      for( ; j < t; j++ ) {
+        currentTab = currentWindow.tabs[j];
+        // Proceed only with youtube pages
+        if(currentTab.url.match(injectableUrlRegex) ) {
+          injectScriptIntoTab(currentTab);
+          tabToTrack = currentTab;
+        }
       }
     }
-  }
 
-  // Activate keyboard shortcuts for the last Youtube video tab detected
-  if (tabToTrack) {
-    setTrackedTab(tabToTrack);
-  }
-});
+    // Track the last Youtube video tab detected
+    if (tabToTrack) {
+      setTrackedTab(tabToTrack);
+    }
+  });
+}
 
-// Inject contentScript
-var injectIntoTab = function (tab) {
+// Inject contentScript into a specific tab
+function injectScriptIntoTab(tab) {
   if (!tab.id || !tab.url) {
     return;
   }
@@ -266,4 +268,7 @@ var injectIntoTab = function (tab) {
   } catch (e) {
     console.log("Unable to inject content script in tab URL " + tab.url + ": " + e)
   }
-};
+}
+
+// Inject contentScript on upgrade/install into all youtube tabs
+injectScriptIntoAllTabs();
