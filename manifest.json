@@ -28,7 +28,6 @@
   "permissions": [
     "activeTab",
     "tabs",
-    "background",
     "*://*.youtube.com/*"
   ],
 
@@ -44,22 +43,19 @@
       "suggested_key": {
         "default": "MediaPrevTrack"
       },
-      "description": "Go to previous track",
-      "global": true
+      "description": "Go to previous track"
     },
     "cmd_play_pause": {
       "suggested_key": {
         "default": "MediaPlayPause"
       },
-      "description": "Play/pause",
-      "global": true
+      "description": "Play/pause"
     },
     "cmd_next_track": {
       "suggested_key": {
         "default": "MediaNextTrack"
       },
-      "description": "Go to next track",
-      "global": true
+      "description": "Go to next track"
     }
   }
 }
